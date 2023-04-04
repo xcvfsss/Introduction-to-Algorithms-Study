@@ -1,4 +1,3 @@
-
 class ListNode:
     def __init__(self, value):
         self.value = value
@@ -26,16 +25,17 @@ class LinkedList:
         if position == 0:
             new_node.next = self.head
             self.head = new_node
+            return
         current = self.head
         index = 0
-        while index < position -1 and current:
+        while index < position - 1 and current:
             current = current.next
             index += 1
         if current:
             new_node.next = current.next
             current.next = new_node
         else:
-            print('Invalid position')
+            print("Invalid position")
 
     def search(self, value):
         current = self.head
@@ -71,9 +71,9 @@ class LinkedList:
     def display(self):
         current = self.head
         while current:
-            print(current.value, end = ' -> ')
+            print(current.value, end=" -> ")
             current = current.next
-        print('None')
+        print("None")
 
 # 测试
 linked_list = LinkedList()
@@ -86,6 +86,3 @@ print(linked_list.search(1.5))  # 输出：1
 linked_list.remove(1.5)
 linked_list.display()  # 输出：1 -> 2 -> 3 -> None
 print(linked_list.length())  # 输出：3
-
-
-
