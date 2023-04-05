@@ -9,13 +9,13 @@ class HashTable:
         return hash(key) % self.size
 
     def _rehash(self, old_hash, step):
-        return (old_hash + step) %self.size
+        return (old_hash + step) % self.size
 
     def _resize(self):
         old_table = self.table
-        self.num_elements = 0
         self.size = self.size * 2
         self.table = [None] * self.size
+        self.num_elements = 0
         for item in old_table:
             if item is not None:
                 self.put(item[0], item[1])
@@ -82,6 +82,7 @@ class HashTable:
         self.put(key, value)
 
 
+
 # 创建一个空的哈希表
 hash_table = HashTable()
 
@@ -114,7 +115,3 @@ print(f"Deleted banana: {hash_table.get('banana')}")
 # 测试键是否存在于哈希表中
 print(f"Does 'orange' exist?: {'orange' in hash_table}")
 print(f"Does 'banana' exist?: {'banana' in hash_table}")
-
-
-
-
