@@ -37,6 +37,8 @@ class HashTable:
                 self.num_elements += 1
             self.table[next_slot] = (key, value)
 
+
+
     def get(self, key):
         start_slot = self._hash(key)
         position = start_slot
