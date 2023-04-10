@@ -122,52 +122,67 @@ class HashTable:
                 current = current.next
 
     def put(self, key, value):
-        # 检查当前哈希表的元素数量与表的大小之比是否大于预设的负载因子。如果是，则说明需要对哈希表进行扩容。
-        if self.num_elements / self.size > self.load_factor:
-            # 对哈希表进行扩容。这个操作将哈希表的大小翻倍，重新分配所有元素到新的哈希槽中。
-            self._resize()
-        # 计算键值 key 的哈希值，并找到对应的哈希槽索引。
-        index = self._hash(key)
-        # 获取当前索引对应的哈希槽的链表
-        linked_list = self.table[index]
+        # # 检查当前哈希表的元素数量与表的大小之比是否大于预设的负载因子。如果是，则说明需要对哈希表进行扩容。
+        # if self.num_elements / self.size > self.load_factor:
+        #     # 对哈希表进行扩容。这个操作将哈希表的大小翻倍，重新分配所有元素到新的哈希槽中。
+        #     self._resize()
+        # # 计算键值 key 的哈希值，并找到对应的哈希槽索引。
+        # index = self._hash(key)
+        # # 获取当前索引对应的哈希槽的链表
+        # linked_list = self.table[index]
+        #
+        # # 判断当前链表是否已经包含了给定的键值 key。如果包含，则更新对应的值。
+        # if linked_list.is_contains(key):
+        #     # 如果链表已经包含了给定的键值 key，则更新对应的值。
+        #     linked_list[key] = value
+        # # 如果链表不包含给定的键值 key，则执行以下操作。
+        # else:
+        #     # 判断当前链表的长度是否小于预设的最大长度。如果是，则在当前链表中添加新的键值对。
+        #     if len(linked_list) < self.max_length:
+        #         # 在当前链表中添加新的键值对。
+        #         linked_list.append(key, value)
+        #         # 更新哈希表中的元素数量。
+        #         self.num_elements += 1
+        #     # 如果当前链表的长度大于等于预设的最大长度，则需要在其他哈希槽中找到合适的位置来存储新的键值对或者更新键值对。
+        #     else:
+        #         # 通过再哈希找到下一个可能的哈希槽。
+        #         next_slot = self._rehash(index, 1)
+        #         # 使用无限循环来遍历哈希槽，直到找到合适的位置来存储新的键值对或者更新键值对。
+        #         while True:
+        #             # 获取下一个哈希槽的链表。
+        #             next_linked_list = self.table[next_slot]
+        #             # 判断下一个链表是否已经包含了给定的键值 key。如果包含，则更新对应的值。
+        #             if next_linked_list.is_contains(key):
+        #                 # 如果下一个链表已经包含了给定的键值 key，则更新对应的值。
+        #                 next_linked_list[key] = value
+        #                 break
+        #             # 判断下一个链表的长度是否小于预设的最大长度。如果是，则在下一个链表中添加新的键值对。
+        #             elif len(next_linked_list) < self.max_length:
+        #                 # 在下一个链表中添加新的键值对。
+        #                 next_linked_list.append(key, value)
+        #                 # 更新哈希表中的元素数量。
+        #                 self.num_elements += 1
+        #                 # 找到合适的位置后，跳出循环。
+        #                 break
+        #             # 如果下一个链表的长度大于等于预设的最大长度，则需要继续查找下一个哈希槽。
+        #             else:
+        #                 # 通过再哈希找到下一个可能的哈希槽。
+        #                 next_slot = self._rehash(next_slot, 1)
 
-        # 判断当前链表是否已经包含了给定的键值 key。如果包含，则更新对应的值。
-        if linked_list.is_contains(key):
-            # 如果链表已经包含了给定的键值 key，则更新对应的值。
-            linked_list[key] = value
-        # 如果链表不包含给定的键值 key，则执行以下操作。
-        else:
-            # 判断当前链表的长度是否小于预设的最大长度。如果是，则在当前链表中添加新的键值对。
-            if len(linked_list) < self.max_length:
-                # 在当前链表中添加新的键值对。
+        if self.num_elements / self.size > self.load_factor:
+            self._resize()
+        index = self._hash(key)
+        while True:
+            linked_list = self.table[index]
+            if linked_list.is_contains(key):
+                linked_list[key] = value
+                break
+            elif len(linked_list) < self.max_length:
                 linked_list.append(key, value)
-                # 更新哈希表中的元素数量。
                 self.num_elements += 1
-            # 如果当前链表的长度大于等于预设的最大长度，则需要在其他哈希槽中找到合适的位置来存储新的键值对或者更新键值对。
+                break
             else:
-                # 通过再哈希找到下一个可能的哈希槽。
-                next_slot = self._rehash(index, 1)
-                # 使用无限循环来遍历哈希槽，直到找到合适的位置来存储新的键值对或者更新键值对。
-                while True:
-                    # 获取下一个哈希槽的链表。
-                    next_linked_list = self.table[next_slot]
-                    # 判断下一个链表是否已经包含了给定的键值 key。如果包含，则更新对应的值。
-                    if next_linked_list.is_contains(key):
-                        # 如果下一个链表已经包含了给定的键值 key，则更新对应的值。
-                        next_linked_list[key] = value
-                        break
-                    # 判断下一个链表的长度是否小于预设的最大长度。如果是，则在下一个链表中添加新的键值对。
-                    elif len(next_linked_list) < self.max_length:
-                        # 在下一个链表中添加新的键值对。
-                        next_linked_list.append(key, value)
-                        # 更新哈希表中的元素数量。
-                        self.num_elements += 1
-                        # 找到合适的位置后，跳出循环。
-                        break
-                    # 如果下一个链表的长度大于等于预设的最大长度，则需要继续查找下一个哈希槽。
-                    else:
-                        # 通过再哈希找到下一个可能的哈希槽。
-                        next_slot = self._rehash(next_slot, 1)
+                index = self._rehash(index, 1)
 
     '''
     1、模块化与分解: 将问题分解成较小、独立的部分，这样便于理解和实现。例如，在这个例子中，我们将问题分为了几个部分：
