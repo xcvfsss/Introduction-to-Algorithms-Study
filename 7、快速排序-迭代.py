@@ -31,6 +31,5 @@ def quick_sort_iterative(arr):
             pivot_index = partition(low, high)
             stack.extend([(low, pivot_index - 1),(pivot_index + 1, high)])
     return arr
-
 my_list = [3, 6, 5, 3, 6, 8, 2, 5, 89, 54, 63, 12, 76, 98, 34, 56, 78, 4, 23, 15, 16, 8, 10, 1, 2, 1]
 print(quick_sort_iterative(my_list))

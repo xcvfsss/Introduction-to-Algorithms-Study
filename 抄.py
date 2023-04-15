@@ -1,75 +1,29 @@
+import random
 
-class PriorityQueue:
-    def __init__(self):
-        self._queue = [None]
+def quick_sort(arr, low, high):
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quick_sort(arr, low, pivot_index - 1)
+        quick_sort(arr, pivot_index + 1, high)
 
-    def _parent(self, index):
-        return index // 2
+def partition(arr, low, high):
+    pivot_index = random.randint(low, high)
+    arr[pivot_index], arr[high] = arr[high], arr[pivot_index]
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
 
-    def _left_child(self, index):
-        return index * 2
+def random_quick_sort(arr):
+    quick_sort(arr, 0, len(arr) - 1)
+    return arr
 
-    def _right_child(self, index):
-        return index * 2 + 1
-
-    def _swap(self, index1, index2):
-        self._queue[index1], self._queue[index2] = self._queue[index2], self._queue[index1]
-
-    def _sift_up(self, index):
-        while index > 1 and self._queue[index //2][1] < self._queue[index][1]:
-            self._swap(index, index // 2)
-            index = index // 2
-
-    def _sift_dowm(self, index):
-        max_index = index
-        left_child = self._left_child(index)
-        right_child = self._right_child(index)
-
-        if left_child < len(self._queue) and self._queue[left_child][1] > self._queue[max_index][1]:
-            max_index = left_child
-        if right_child < len(self._queue) and self._queue[right_child][1] > self._queue[max_index][1]:
-            max_index = right_child
-        if max_index != index:
-            self._swap(index, max_index)
-            self._sift_dowm(max_index)
-
-    def push(self, item, priority):
-        self._queue.append((item, priority))
-        self._sift_up(len(self._queue) - 1)
-
-    def pop(self):
-        if len(self._queue) <= 1:
-            raise IndexError('队列为空，无法弹出元素')
-        max_item = self._queue[1][0]
-        self._queue[1] = self._queue[-1]
-        self._queue.pop()
-        self._sift_dowm(1)
-        return max_item
-
-    def is_empty(self):
-        return len(self._queue) == 1
-
-pq = PriorityQueue()
-pq.push("任务1", 1)
-pq.push("任务2", 3)
-pq.push("任务3", 45)
-pq.push("任务4", 62)
-pq.push("任务5", 50)
-pq.push("任务6", 16)
-pq.push("任务7", 42)
-pq.push("任务8", 58)
-pq.push("任务9", 92)
-pq.push("任务10", 12)
-pq.push("任务11", 5)
-pq.push("任务12", 8)
-pq.push("任务13", 9)
-pq.push("任务14", 6)
-
-print(pq._queue)
-print(pq.pop())  # 输出: 任务2
-print(pq.pop())  # 输出: 任务3
-print(pq.pop())  # 输出: 任务1
-
+my_list = [3, 6, 5, 3, 6, 8, 2, 5, 89, 54, 63, 12, 76, 98, 34, 56, 78, 4, 23, 15, 16, 8, 10, 1, 2, 1]
+print(random_quick_sort(my_list))
 
 
 
